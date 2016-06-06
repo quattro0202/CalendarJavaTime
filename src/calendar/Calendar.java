@@ -46,21 +46,19 @@ public class Calendar {
         LocalDate day = yearMonth.atDay(1);
 
 
-        String color;
         while(day.isBefore(yearMonth.atEndOfMonth().plusDays(1))){
             if(currentDayOfWeek.equals(day.getDayOfWeek())){
                 if(day.equals(LocalDate.now())){
-                    color = ANSI_RED;
+                    System.out.printf("%13s", ANSI_RED + day.getDayOfMonth() + ANSI_RESET);
                 }else {
                     if(currentDayOfWeek.equals(DayOfWeek.SUNDAY) || currentDayOfWeek.equals(DayOfWeek.SATURDAY)){
-                        color = ANSI_YELLOW;
+                        System.out.printf("%13s", ANSI_YELLOW + day.getDayOfMonth() + ANSI_RESET);
                     }else {
-                        color = ANSI_BLACK;
+                        System.out.printf("%4s", day.getDayOfMonth());
                     }
                 }
 
 
-                System.out.printf("%13s", color + day.getDayOfMonth() + ANSI_RESET);
                 if(currentDayOfWeek.equals(DayOfWeek.SUNDAY))
                     System.out.println();
             }else{
