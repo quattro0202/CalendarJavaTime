@@ -47,11 +47,16 @@ public class Calendar {
     }
 
     public void print(){
+
         System.out.println();
+
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM yyyy").toFormatter(Locale.ENGLISH);
+
         System.out.printf("%" + (width * 7) + "s", yearMonth.format(formatter));
+
         System.out.println();
+
         for (int i = 0; i < DayOfWeek.values().length; i++) {
             String day = DayOfWeek.values()[i].getDisplayName(TextStyle.SHORT, Locale.UK);
             if(i < DayOfWeek.values().length - 2){
@@ -63,34 +68,35 @@ public class Calendar {
         }
         System.out.println();
 
-        DayOfWeek currentDayOfWeek = DayOfWeek.of(1);
-        LocalDate day = yearMonth.atDay(1);
 
+        LocalDate dayOfMonth = yearMonth.atDay(1);
 
-        while(day.isBefore(yearMonth.atEndOfMonth().plusDays(1))){
-            if(currentDayOfWeek.equals(day.getDayOfWeek())){
-                if(day.equals(LocalDate.now())){
-                    System.out.printf("%" + (width +  9) + "s", ANSI_RED + day.getDayOfMonth() + ANSI_RESET);
-                }else {
-                    if(currentDayOfWeek.equals(DayOfWeek.SUNDAY) || currentDayOfWeek.equals(DayOfWeek.SATURDAY)){
-                        System.out.printf("%" + (width +  9) + "s", ANSI_YELLOW + day.getDayOfMonth() + ANSI_RESET);
-                    }else {
-                        System.out.printf("%" + width + "s", day.getDayOfMonth());
-                    }
-                }
-
-
-                if(currentDayOfWeek.getValue() == 7)
-                    System.out.println();
-            }else{
-                for (int i = 0; i < width; i++) {
-                    System.out.print(" ");
-                }
-                currentDayOfWeek = currentDayOfWeek.plus(1);
-                continue;
+        for (int i = 1; i < dayOfMonth.getDayOfWeek().getValue(); i++){
+            for (int j = 0; j < width; j++) {
+                System.out.print(" ");
             }
-            currentDayOfWeek = currentDayOfWeek.plus(1);
-            day = day.plusDays(1);
+        }
+
+        while(dayOfMonth.isBefore(yearMonth.atEndOfMonth().plusDays(1))){
+
+            if(dayOfMonth.equals(LocalDate.now())){
+                System.out.printf("%" + (width +  9) + "s", ANSI_RED + dayOfMonth.getDayOfMonth()
+                        + ANSI_RESET);
+            }else {
+                if (dayOfMonth.getDayOfWeek().equals(DayOfWeek.of(6))
+                        || dayOfMonth.getDayOfWeek().equals(DayOfWeek.of(7))) {
+                    System.out.printf("%" + (width + 9) + "s", ANSI_YELLOW + dayOfMonth.getDayOfMonth()
+                            + ANSI_RESET);
+                } else {
+
+                    System.out.printf("%" + width + "s", dayOfMonth.getDayOfMonth());
+                }
+                if(dayOfMonth.getDayOfWeek().getValue() == 7){
+                    System.out.println();
+
+                }
+            }
+            dayOfMonth = dayOfMonth.plusDays(1);
         }
         System.out.println();
     }
