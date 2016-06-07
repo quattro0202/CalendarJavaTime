@@ -18,19 +18,18 @@ public class Calendar {
     private static final String ANSI_YELLOW = "\u001B[33m";
 
 
-
     private YearMonth yearMonth;
 
 
-    public Calendar(String month){
+    public Calendar(String month) {
         this(month, Year.now().toString());
     }
 
-    public Calendar(){
+    public Calendar() {
         yearMonth = YearMonth.now();
     }
 
-    public Calendar(String month, String year){
+    public Calendar(String month, String year) {
         String dateStr = month + " " + year;
 
         DateTimeFormatter fullFormatter = new DateTimeFormatterBuilder()
@@ -39,14 +38,14 @@ public class Calendar {
         DateTimeFormatter shortFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMM yyyy").toFormatter(Locale.ENGLISH);
 
-        try{
+        try {
             yearMonth = YearMonth.parse(dateStr, fullFormatter);
-        }catch (Exception e){
+        } catch (Exception e) {
             yearMonth = YearMonth.parse(dateStr, shortFormatter);
         }
     }
 
-    public void print(){
+    public void print() {
 
         System.out.println();
 
@@ -59,9 +58,9 @@ public class Calendar {
 
         for (int i = 0; i < DayOfWeek.values().length; i++) {
             String day = DayOfWeek.values()[i].getDisplayName(TextStyle.SHORT, Locale.UK);
-            if(i < DayOfWeek.values().length - 2){
+            if (i < DayOfWeek.values().length - 2) {
                 System.out.printf("%" + width + "s", day);
-            }else {
+            } else {
                 System.out.printf("%" + (width + 9) + "s", ANSI_YELLOW + day + ANSI_RESET);
             }
 
@@ -71,18 +70,18 @@ public class Calendar {
 
         LocalDate dayOfMonth = yearMonth.atDay(1);
 
-        for (int i = 1; i < dayOfMonth.getDayOfWeek().getValue(); i++){
+        for (int i = 1; i < dayOfMonth.getDayOfWeek().getValue(); i++) {
             for (int j = 0; j < width; j++) {
                 System.out.print(" ");
             }
         }
 
-        while(dayOfMonth.isBefore(yearMonth.atEndOfMonth().plusDays(1))){
+        while (dayOfMonth.isBefore(yearMonth.atEndOfMonth().plusDays(1))) {
 
-            if(dayOfMonth.equals(LocalDate.now())){
-                System.out.printf("%" + (width +  9) + "s", ANSI_RED + dayOfMonth.getDayOfMonth()
+            if (dayOfMonth.equals(LocalDate.now())) {
+                System.out.printf("%" + (width + 9) + "s", ANSI_RED + dayOfMonth.getDayOfMonth()
                         + ANSI_RESET);
-            }else {
+            } else {
                 if (dayOfMonth.getDayOfWeek().equals(DayOfWeek.of(6))
                         || dayOfMonth.getDayOfWeek().equals(DayOfWeek.of(7))) {
                     System.out.printf("%" + (width + 9) + "s", ANSI_YELLOW + dayOfMonth.getDayOfMonth()
@@ -91,7 +90,7 @@ public class Calendar {
 
                     System.out.printf("%" + width + "s", dayOfMonth.getDayOfMonth());
                 }
-                if(dayOfMonth.getDayOfWeek().getValue() == 7){
+                if (dayOfMonth.getDayOfWeek().getValue() == 7) {
                     System.out.println();
 
                 }
